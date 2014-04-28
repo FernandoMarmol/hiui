@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    		android:layout_width="match_parent"
+    		android:layout_height="match_parent">
+
+	<LinearLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="vertical">
+	    
+	    <TextView
+	        android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_margin="6dip"
+			android:gravity="center_horizontal"
+			android:textSize="22sp"
+			android:text="@string/main_use_title"/>
+	    
+	    <LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_margin="6dip"
+			android:orientation="vertical"
+			android:background="@drawable/border_1">
+			
+	        <TextView
+	            android:id="@+id/timeTitle"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:gravity="center_horizontal"
+	            android:textSize="16sp"/>
+	        
+			<es.fmm.hiui.custom.ChronoTextView
+			    android:id="@+id/time"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:gravity="center_horizontal"
+	            android:layout_margin="8dip"
+	            android:textSize="36sp"/>
+	       
+	    </LinearLayout>
+	    
+	    <TableLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:weightSum="2">
+	        <TableRow>
+	            <LinearLayout
+				    android:id="@+id/daysInfo"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_margin="6dip"
+					android:layout_weight="1"
+					android:padding="3dip"
+					android:orientation="vertical"
+					android:background="@drawable/border_1">
+					
+	                	<TextView
+				            android:id="@+id/daysTitle"
+				            android:layout_width="match_parent"
+				            android:layout_height="wrap_content"
+				            android:gravity="center_horizontal"
+				            android:textSize="14sp"/>
+					
+						<es.fmm.hiui.custom.ChronoTextView
+						    android:id="@+id/days"
+				            android:layout_width="match_parent"
+				            android:layout_height="wrap_content"
+				            android:gravity="center_horizontal"
+				            android:layout_margin="8dip"
+				            android:textSize="30sp"/>	       
+					
+				</LinearLayout>
+	            
+	            <LinearLayout
+				    android:id="@+id/timesInfo"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_margin="6dip"
+					android:layout_weight="1"
+					android:padding="3dip"
+					android:orientation="vertical"
+					android:background="@drawable/border_1">
+					
+	                	<TextView
+				            android:id="@+id/timesTitle"
+				            android:layout_width="match_parent"
+				            android:layout_height="wrap_content"
+				            android:gravity="center_horizontal"
+				            android:textSize="14sp"/>
+					
+						<es.fmm.hiui.custom.ChronoTextView
+						    android:id="@+id/times"
+				            android:layout_width="match_parent"
+				            android:layout_height="wrap_content"
+				            android:gravity="center_horizontal"
+				            android:layout_margin="8dip"
+				            android:textSize="30sp"/>	       
+					
+				</LinearLayout>
+			</TableRow>
+	    </TableLayout>
+	    
+	    <TextView
+	        android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_margin="6dip"
+			android:gravity="center_horizontal"
+			android:textSize="20sp"
+			android:text="@string/main_apps_title"/>
+	    
+	    <TableLayout
+	        android:id="@+id/appsLayout"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_margin="6dip"
+			android:weightSum="5"
+			android:padding="6dip"/>
+			
+	</LinearLayout>
+
+</ScrollView>

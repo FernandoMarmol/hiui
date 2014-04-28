@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+	<string name="app_name">How I Use It</string>
+
+	<!-- PROPERTIES -->
+	<string name="title_general">Así has usado hoy el móvil</string>
+	<string name="time_on_1">Tiempo dedicado</string>
+	<string name="times_on_1">Usos</string>
+	<string name="pending_info">(&#8230;espere&#8230;)</string>
+	
+	<!-- ACTIONS -->
+	<string name="action_settings">Ajustes</string>
+	<string name="action_about">Más</string>
+	
+	<!-- FRASES COMODIN -->
+	<string name="title_riseearly">Seems like you did rise early today</string>
+
+	<!-- WIDGET -->
+	<string name="widget_button_all_statistics">Días anteriores</string>
+
+	<!-- STATISTICS -->
+	<string name="statistics_title">Estadísticas</string>
+	<string name="statistics_row_day">Día&#160;</string>
+	<string name="statistics_row_time">Tiempo de uso del móvil:&#160;</string>
+	<string name="statistics_row_times">Veces que se usó el móvil:&#160;</string>
+	<string name="statistics_month_prompt">[Elige un mes&#8230;]</string>
+	<string name="statistics_year_prompt">[Elige un año&#8230;]</string>
+	
+	<!-- SETTINGS -->
+	<string name="settings">Ajustes</string>
+	<string name="settings_title">Ajustes</string>
+	<string name="settings_notifications">Notificación de uso del móvil</string>
+	<string name="settings_notifications_on">Ahora mismo las notificaciones están activas</string>
+	<string name="settings_notifications_off">Ahora mismo las notificaciones NO están activas</string>
+	
+	<!-- ABOUT -->
+	<string name="about_text">De un tiempo a esta parte, el móvil se ha convertido en un compañero inseparable. Le dedicamos mucho tiempo; tiempo que dejamos de utilizar para otras cosas. En muchas ocasiones no somos conscientes de hasta que punto le damos prioridad y esta aplicación pretende hacer ver qué es lo que realmente estamos haciendo con él en términos concretos de uso, tiempo y aplicaciones. A partir de ahí, está en cada uno establecer costumbres y hábitos de uso para que no entre en conflicto con el desarrollo normal de la vida y convivencia de cada uno. Si queréis dejar una opinión, tenéis un botón para hacerlo, o si bien queréis enviar información directamente, podéis hacerlo en howiuseit.app@gmail.com</string>
+	<string name="about_market_button">Danos tu opinión</string>
+	<string name="about_ok_button">Ok</string>
+	
+	<!-- NOTIFICATIONS -->
+	<string name="notification_title">Tiempo de uso del móvil hoy</string>
+	<string name="notification_message_hours">&#160;hora/s de uso</string>
+	
+	<!-- MONTHS -->
+	<string name="month_january">Enero</string>
+	<string name="month_february">Febrero</string>
+	<string name="month_march">Marzo</string>
+	<string name="month_april">Abril</string>
+	<string name="month_may">Mayo</string>
+	<string name="month_june">Junio</string>
+	<string name="month_july">Julio</string>
+	<string name="month_august">Agosto</string>
+	<string name="month_september">Septiembre</string>
+	<string name="month_october">Octubre</string>
+	<string name="month_november">Noviembre</string>
+	<string name="month_december">Diciembre</string>
+	
+	<!-- MAIN VIEW -->
+	<string name="main_use_title">Uso general del teléfono</string>
+	<string name="main_apps_title">Apps</string>
+	<string name="main_time">Tiempo</string>
+	<string name="main_times">Usos</string>
+	<string name="main_days">Días</string>
+	<string name="main_uninstalled">App\desinstalada</string>
+	
+	<!-- OTHERS -->
+	<string name="others_hours">horas</string>
+	<string name="others_minutes">minutos</string>
+	<string name="others_seconds">segundos</string>
+	
+	<!-- RECORDS -->
+	<string name="record_time_title">Récord usando el móvil!</string>
+	<string name="record_time_text"><![CDATA[Vaya día! Llevas <b>]]></string>
+	<string name="record_time_text2"><![CDATA[</b> con el móvil en la mano!]]></string>
+	<string name="record_uses_title">Récord usando el móvil!</string>
+	<string name="record_uses_text"><![CDATA[Hoy has encendido el móvil <b>]]></string>
+	<string name="record_uses_text2"><![CDATA[</b> veces. Día ajetreado eh?!]]></string>
+	
+</resources>
