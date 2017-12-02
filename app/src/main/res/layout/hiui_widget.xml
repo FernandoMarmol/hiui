@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/mainLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <!-- CAPA PARA EL BACKGROUND -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0.75"
+        android:background="@drawable/appwidget_dark_bg" />
+
+    <!-- CAPA PARA LOS DATOS -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:orientation="vertical"
+        android:padding="12dp" >
+
+        <TextView
+            android:id="@+id/appsTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="4dp"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="2"
+            android:minLines="1"
+            android:text="@string/title_general"
+            android:textColor="@android:color/white" />
+
+        <TextView
+            android:id="@+id/timesONTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/appsTitle"
+            android:text="@string/times_on_1"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/timesON"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@id/timesONTitle"
+            android:layout_below="@id/timesONTitle"
+            android:paddingRight="3dip"
+            android:textColor="@android:color/white"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/timeONTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/appsTitle"
+            android:text="@string/time_on_1"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/timeON"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/timeONTitle"
+            android:textColor="@android:color/white"
+            android:textSize="16sp" />
+
+        <LinearLayout
+            android:id="@+id/tasksStatusLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/timeON"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="6dp"
+            android:clickable="false"
+            android:gravity="center" >
+
+            <TextView
+                android:id="@+id/tasksStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="@string/pending_info"
+                android:textColor="@android:color/primary_text_dark" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <!-- CAPA PARA TOCAR Y ACTUALIZAR EL WIDGET Y PARA EL BOTON DE ESTADISTICAS-->
+    <RelativeLayout
+        android:id="@+id/touchSensor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:paddingBottom="8dp"
+        android:alpha="1"
+        android:clickable="true"
+        android:orientation="vertical" >
+
+        <ImageButton
+            android:id="@+id/buttonSettings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginBottom="6dip"
+            android:layout_marginLeft="6dip"
+            android:alpha="0.8"
+            android:background="@null"
+            android:clickable="true"
+            android:contentDescription="@string/widget_button_all_statistics"
+            android:src="@android:drawable/ic_menu_manage" />
+        
+        <ImageButton
+            android:id="@+id/buttonStats"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="6dip"
+            android:layout_marginRight="6dip"
+            android:alpha="0.8"
+            android:background="@null"
+            android:clickable="true"
+            android:contentDescription="@string/widget_button_all_statistics"
+            android:src="@android:drawable/ic_menu_more" />
+    </RelativeLayout>
+
+</FrameLayout>

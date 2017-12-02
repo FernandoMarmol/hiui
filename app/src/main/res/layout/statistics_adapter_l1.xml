@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/statsAdapterLayout"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:padding="6dip">
+
+	<RelativeLayout
+			android:id="@+id/mainInfo"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content">
+
+		<TextView
+			android:id="@+id/statsDayText"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginRight="12dip"
+			android:layout_centerVertical="true"
+			android:contentDescription="" />
+
+		<TextView
+			android:id="@+id/statsTimeText"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentTop="true"
+			android:layout_toRightOf="@id/statsDayText"
+			android:ellipsize="marquee"
+			android:singleLine="true"
+			android:textSize="12sp" />
+
+		<TextView
+			android:id="@+id/statsTimesText"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_below="@id/statsTimeText"
+			android:layout_toRightOf="@id/statsDayText"
+			android:ellipsize="marquee"
+			android:singleLine="true"
+			android:textSize="12sp" />
+
+	</RelativeLayout>
+
+
+</RelativeLayout>

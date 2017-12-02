@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+	<integer name="widget_apps_showing">4</integer> <!-- Number of apps showing in the main widget -->
+
+	<integer name="service_update_interval">20000</integer>
+	<integer name="widget_update_interval">60000</integer>
+
+</resources>
