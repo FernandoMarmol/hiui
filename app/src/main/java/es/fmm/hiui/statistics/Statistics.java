@@ -73,7 +73,7 @@ public class Statistics extends Activity {
 		    	//Transaccion BBDD
 				List<PhoneUseBean> pubs;
 				try{
-					SQLiteManager.getInstance().openDB(false);
+					SQLiteManager.getInstance().openDB(false, instance.getApplicationContext());
 					pubs = PhoneUse.getPhoneUses(year, monthNum);
 					
 					StatisticsAdapter adapter = new StatisticsAdapter(Statistics.instance, pubs);
@@ -105,7 +105,7 @@ public class Statistics extends Activity {
 		    	//Transaccion BBDD
 				List<PhoneUseBean> pubs;
 				try{
-					SQLiteManager.getInstance().openDB(false);
+					SQLiteManager.getInstance().openDB(false, instance.getApplicationContext());
 					pubs = PhoneUse.getPhoneUses(year, monthNum);
 					
 					StatisticsAdapter adapter = new StatisticsAdapter(Statistics.instance, pubs);

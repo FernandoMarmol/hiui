@@ -7,7 +7,11 @@ import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import android.app.backup.BackupManager;
+import android.content.Context;
 import android.util.Log;
+
+import es.fmm.hiui.BuildConfig;
 import es.fmm.hiui.application.Util;
 import es.fmm.hiui.ddbb.SQLiteManager;
 import es.fmm.hiui.ddbb.tables.AppsUse;
@@ -27,7 +31,7 @@ public class TodayStats {
 	public static long timeOn = 0; //tiempo con la pantalla encendida
 	public static long lastTimeOn = 0; //Ultima vez que se tiene consciencia de que el teléfono estuviese activo (pantalla encendida)
 
-	public static LinkedHashMap<String, Integer> applicationsStats = new LinkedHashMap<String, Integer>(); //Estadisticas de uso de las apps
+	public static LinkedHashMap<String, Integer> applicationsStats = new LinkedHashMap<>(); //Estadisticas de uso de las apps
 
 	/**
 	 * This method is called when the day is off and statistics must be initialized to store a new day statistics
@@ -45,15 +49,18 @@ public class TodayStats {
 			onCounter = 0;
 			offCounter = 0;
 
-			applicationsStats = new LinkedHashMap<String, Integer>();
+			applicationsStats = new LinkedHashMap<>();
+
+			//Con esta línea indicamos al sistema que tiene que hacer un backup de los datos de la app. De esta manera se hace diariamente
+			BackupManager.dataChanged(BuildConfig.APPLICATION_ID);
 		}
 	}
 
-	public static boolean saveStats(String date){
+	public static boolean saveStats(String date, Context context){
 		boolean saved = false;
 		//Transaccion BBDD
 		try{
-			SQLiteManager.getInstance().openDB(true);
+			SQLiteManager.getInstance().openDB(true, context);
 
 			//EMPEZAMOS CON EL USO DE LAS APLICACIONES
 			//Comienza la insercion en BBDD
@@ -74,17 +81,18 @@ public class TodayStats {
 		}
 		finally{
 			SQLiteManager.getInstance().closeDB();
+			BackupManager.dataChanged(BuildConfig.APPLICATION_ID);
 		}
 
 		return saved;
 	}
 
-	public static boolean loadStats(String date){
+	public static boolean loadStats(String date, Context context){
 		boolean loaded = false;
 
 		//Transaccion BBDD
 		try{
-			SQLiteManager.getInstance().openDB(false);
+			SQLiteManager.getInstance().openDB(false, context);
 
 			//Estadisticas apps
 			applicationsStats = AppsUse.getAllAppUsesToHashMap(date);

@@ -62,7 +62,7 @@ public class WidgetReceiver extends AppWidgetProvider{
 
 		//ACTUALIZAMOS EL VALOR DE LOS TEXTOS DEL WIDGET (EMPEZAMOS POR LAS APPS)
 		int contador = 0;
-		StringBuffer apps = new StringBuffer();
+		StringBuilder apps = new StringBuilder();
 		Set<String> set = TodayStats.applicationsStats.keySet();
 		for (String key : set) {
 			if(contador < context.getResources().getInteger(R.integer.widget_apps_showing)){

@@ -1,14 +1,5 @@
 package es.fmm.hiui.services;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Set;
-
 import android.app.ActivityManager;
 import android.app.AlarmManager;
 import android.app.KeyguardManager;
@@ -19,16 +10,30 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.text.Html;
 import android.util.Log;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Set;
+
 import es.fmm.hiui.R;
 import es.fmm.hiui.application.Constants;
 import es.fmm.hiui.application.Util;
 import es.fmm.hiui.em.AppsEM;
 import es.fmm.hiui.em.GlobalRecordsEM;
 import es.fmm.hiui.receivers.OnOffReceiver;
+import es.fmm.hiui.sensors.HiuiSensorEventListener;
 import es.fmm.hiui.statistics.TodayStats;
 import es.fmm.hiui.widget.WidgetUtil;
 
@@ -38,41 +43,45 @@ import es.fmm.hiui.widget.WidgetUtil;
 public class WidgetPersistentService extends Service {
 
 	private static OnOffReceiver oor = null;
+	private static HiuiSensorEventListener sel = null;
 	
 	private static boolean isDeviceActive = false;
 
 	@Override
 	public void onCreate() {
-		//Cargamos las estadísticas que pudiese haber en BBDD
+		Log.d(WidgetPersistentService.class.getSimpleName(), "onCreate");
 		super.onCreate();
 	}
 
 	@Override
 	public void onDestroy() {
+		Log.d(WidgetPersistentService.class.getSimpleName(), "onDestroy");
 		deactivateOOR(getApplicationContext());
-		TodayStats.saveStats(TodayStats.today);
+		deactivateSEL(getApplicationContext());
+		TodayStats.saveStats(TodayStats.today, this);
 		super.onDestroy();
 	}
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-		
+		Log.d(WidgetPersistentService.class.getSimpleName(), "onStartCommand");
 		activateOOR(getApplicationContext());
+		activateSEL(getApplicationContext());
 		
 		Date time = new Date();
 		
 		//Si no está inicializado el día, lo hacemos y cargamos los datos para ese día
 		if(TodayStats.today == null){
 			TodayStats.newDay();
-			TodayStats.loadStats(TodayStats.today);
+			TodayStats.loadStats(TodayStats.today, this.getApplicationContext());
 		}
 		
 		//Comprobamos si estamos cambiando de dia
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd", Locale.getDefault());
 		if(Integer.parseInt(TodayStats.today) != Integer.parseInt(sdf.format(time))){
-			TodayStats.saveStats(TodayStats.today); //Guardamos las estadísticas de hoy
+			TodayStats.saveStats(TodayStats.today, this); //Guardamos las estadísticas de hoy
 			TodayStats.newDay(); //Empezamos estadísticas para un día nuevo
-			TodayStats.loadStats(TodayStats.today); //Por si acaso cargamos estadísticas que pudiese haber para ese dia nuevo (algo que nunca debería pasar)
+			TodayStats.loadStats(TodayStats.today, this); //Por si acaso cargamos estadísticas que pudiese haber para ese dia nuevo (algo que nunca debería pasar)
 			
 			GlobalRecordsEM.reset();
 		}
@@ -110,7 +119,7 @@ public class WidgetPersistentService extends Service {
 			
 			//Recuperamos la información de las apps y la guardamos
 			gatherAppsInformation(getApplicationContext());
-			TodayStats.saveStats(TodayStats.today);
+			TodayStats.saveStats(TodayStats.today, this);
 		}
 		
 		if(action.equalsIgnoreCase(Intent.ACTION_SCREEN_OFF)){
@@ -144,14 +153,14 @@ public class WidgetPersistentService extends Service {
 	 * @return
 	 */
 	private static LinkedHashMap<String, Integer> sortByValueDesc(HashMap<String, Integer> map) {
-		LinkedHashMap<String, Integer> lhmSorted = new LinkedHashMap<String, Integer>();
+		LinkedHashMap<String, Integer> lhmSorted = new LinkedHashMap<>();
 
 		Integer valueAux = null;
 		String keyAux = null;
 		Set<String> keys = null;
 		while(map.size() > 0){
 			keys = map.keySet();
-			valueAux = Integer.valueOf(0);
+			valueAux = 0;
 			keyAux = "";
 			for(String key: keys){
 				if(map.get(key).compareTo(valueAux) > 0){
@@ -189,6 +198,37 @@ public class WidgetPersistentService extends Service {
 		if(oor != null){
 			context.unregisterReceiver(oor);
 			oor = null;
+		}
+	}
+
+	/**
+	 * This method activates the OnOffReceiver
+	 * @param context
+	 */
+	public static void activateSEL(Context context){
+		if(sel == null){
+			sel = new HiuiSensorEventListener();
+
+			PackageManager manager = context.getPackageManager();
+			boolean hasPressureMeter = manager.hasSystemFeature(PackageManager.FEATURE_SENSOR_BAROMETER);
+			Log.d(WidgetPersistentService.class.getSimpleName(), "¿Tiene barómetro el teléfono?: " + hasPressureMeter);
+
+			SensorManager sensorManager = (SensorManager) context.getApplicationContext().getSystemService(SENSOR_SERVICE);
+			Sensor pressure = sensorManager.getDefaultSensor(Sensor.TYPE_PRESSURE);
+			Log.d(WidgetPersistentService.class.getSimpleName(), "Respuesta del sensor: " + pressure.getResolution());
+			sensorManager.registerListener(sel, pressure, SensorManager.SENSOR_DELAY_NORMAL);
+		}
+	}
+
+	/**
+	 * This method deactivates the OnOffReceiver
+	 * @param context
+	 */
+	public static void deactivateSEL(Context context){
+		if(sel != null){
+			SensorManager sensorManager = (SensorManager) context.getApplicationContext().getSystemService(SENSOR_SERVICE);
+			sensorManager.unregisterListener(sel);
+			sel = null;
 		}
 	}
 
@@ -252,22 +292,18 @@ public class WidgetPersistentService extends Service {
 			int hoursAfter= (int) (spentTimeAfter / Constants.MILLISECONDS_IN_AN_HOUR);
 			
 			if(hoursAfter > hoursBefore){
-				//For Android 11 and up
-				/*Notification notification = new Notification.Builder(context)
-					.setContentTitle(context.getString(R.string.notification_title))
-					.setContentText(hoursAfter + context.getString(R.string.notification_message_hours))
-					.setSmallIcon(R.drawable.ic_launcher)
-					.setDefaults(Notification.DEFAULT_ALL)
-					.build();*/
-				
-				//For Android 10
-				Notification notification = new Notification(R.drawable.ic_launcher, hoursAfter + context.getString(R.string.notification_message_hours), java.lang.System.currentTimeMillis());
-				notification.defaults = Notification.DEFAULT_ALL;
-				PendingIntent appIntent = PendingIntent.getActivity(context, 0, new Intent(), 0);
-				notification.setLatestEventInfo(context, context.getString(R.string.notification_title), hoursAfter + context.getString(R.string.notification_message_hours), appIntent);
-				
-				NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-				nm.notify(1, notification);
+				Intent notificationIntent = new Intent(this, WidgetPersistentService.class);
+				PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,notificationIntent, 0);
+				Notification notification = new Notification.Builder(context)
+						.setContentTitle(context.getString(R.string.notification_title))
+						.setContentText(hoursAfter + context.getString(R.string.notification_message_hours))
+						.setSmallIcon(R.drawable.ic_launcher)
+						.setDefaults(Notification.DEFAULT_ALL)
+						.setContentIntent(pendingIntent)
+						.build();
+
+				NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+				notificationManager.notify(1, notification);
 			}
 		}
 	}
@@ -277,30 +313,57 @@ public class WidgetPersistentService extends Service {
 	 * @param context
 	 */
 	@SuppressWarnings(value = { "deprecation" })
-	private static void checkForRecords(Context context){
+	private static void checkForRecords(Context context) {
 		boolean areNotificationsActive = PreferenceManager.getDefaultSharedPreferences(context).getBoolean(context.getString(R.string.sett_notifications), true);
-		boolean isTodayInstallationDay = (PreferenceManager.getDefaultSharedPreferences(context).getString(context.getString(R.string.sett_installation_day), "000000").equalsIgnoreCase(TodayStats.today))?true:false;
-		if(areNotificationsActive && !isTodayInstallationDay){
-			if(GlobalRecordsEM.isNewTimeRecord(TodayStats.timeOn)){
-				Notification notification = new Notification(R.drawable.ic_launcher, context.getString(R.string.record_time_title), java.lang.System.currentTimeMillis());
-				notification.defaults = Notification.DEFAULT_ALL;
+		boolean isTodayInstallationDay = (PreferenceManager.getDefaultSharedPreferences(context).getString(context.getString(R.string.sett_installation_day), "000000").equalsIgnoreCase(TodayStats.today)) ? true : false;
+		if (areNotificationsActive && !isTodayInstallationDay) {
+			if (GlobalRecordsEM.isNewTimeRecord(TodayStats.timeOn, context)) {
 				PendingIntent appIntent = PendingIntent.getActivity(context, 0, new Intent(), 0);
-				notification.setLatestEventInfo(context, context.getString(R.string.record_time_title), Html.fromHtml(context.getString(R.string.record_time_text) + Util.millisecondsToTimeFormat(TodayStats.timeOn, context.getResources(), false, false) + context.getString(R.string.record_time_text2)), appIntent);
-	
-				NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-				nm.notify(1, notification);
-			}
-			
-			if(GlobalRecordsEM.isNewUsesRecord(TodayStats.onCounter)){
-				Notification notification = new Notification(R.drawable.ic_launcher, context.getString(R.string.record_uses_title), java.lang.System.currentTimeMillis());
-				notification.defaults = Notification.DEFAULT_ALL;
-				PendingIntent appIntent = PendingIntent.getActivity(context, 0, new Intent(), 0);
-				notification.setLatestEventInfo(context, context.getString(R.string.record_uses_title), Html.fromHtml(context.getString(R.string.record_uses_text) + TodayStats.onCounter + context.getString(R.string.record_uses_text2)) , appIntent);
-				
-				NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-				nm.notify(3, notification);
-			}
-		}
-	}
+				Notification notification = new Notification.Builder(context)
+						.setContentTitle(context.getString(R.string.record_time_title))
+						.setContentText(Html.fromHtml(context.getString(R.string.record_time_text) + Util.millisecondsToTimeFormat(TodayStats.timeOn, context.getResources(), false, false) + context.getString(R.string.record_time_text2)))
+						.setSmallIcon(R.drawable.ic_launcher)
+						.setDefaults(Notification.DEFAULT_ALL)
+						.setContentIntent(appIntent)
+						.build();
 
+				NotificationManager notificationManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
+				notificationManager.notify(2, notification);
+			}
+
+			if (GlobalRecordsEM.isNewUsesRecord(TodayStats.onCounter, context)) {
+				PendingIntent appIntent = PendingIntent.getActivity(context, 0, new Intent(), 0);
+				Notification notification = new Notification.Builder(context)
+						.setContentTitle(context.getString(R.string.record_uses_title))
+						.setContentText(Html.fromHtml(context.getString(R.string.record_uses_text) + TodayStats.onCounter + context.getString(R.string.record_uses_text2)))
+						.setSmallIcon(R.drawable.ic_launcher)
+						.setDefaults(Notification.DEFAULT_ALL)
+						.setContentIntent(appIntent)
+						.build();
+
+				NotificationManager notificationManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
+				notificationManager.notify(3, notification);
+			}
+
+
+		}
+
+		/* Ejemplo de notificación con canales - Android SDK 27 Oreo
+		PendingIntent appIntent = PendingIntent.getActivity(context, 0, new Intent(context, Main.class), 0);
+		Notification notification = new NotificationCompat.Builder(context)
+				.setContentTitle("Titulo de notificación de prueba")
+				.setContentText("Notificacion de prueba")
+				.setSmallIcon(R.drawable.ic_launcher)
+				.setDefaults(Notification.DEFAULT_ALL)
+				.setContentIntent(appIntent)
+				.setNumber(765)
+				//.setChannelId("MI_CHANNEL_ID")
+				.build();
+
+		NotificationManager notificationManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
+		//NotificationChannel mChannel = new NotificationChannel("MI_CHANNEL_ID", "Toma cuarto y mitad de canal", NotificationManager.IMPORTANCE_HIGH);
+		//notificationManager.createNotificationChannel(mChannel);
+		notificationManager.notify(1, notification);
+		*/
+	}
 }

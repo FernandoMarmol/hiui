@@ -24,7 +24,7 @@ public class WidgetConfigure extends Activity {
 			mAppWidgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
 		
 		TodayStats.newDay();
-		TodayStats.loadStats(TodayStats.today);
+		TodayStats.loadStats(TodayStats.today, this.getApplicationContext());
 		
 		WidgetUtil.updateWidget(getApplicationContext());
 		

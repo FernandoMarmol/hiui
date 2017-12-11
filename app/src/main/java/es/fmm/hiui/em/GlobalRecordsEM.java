@@ -1,5 +1,7 @@
 package es.fmm.hiui.em;
 
+import android.content.Context;
+
 import es.fmm.hiui.ddbb.SQLiteManager;
 import es.fmm.hiui.ddbb.tables.PhoneUse;
 
@@ -21,10 +23,10 @@ public class GlobalRecordsEM {
 	 * @param usesToCompare
 	 * @return
 	 */
-	public static boolean isNewUsesRecord(int usesToCompare){
+	public static boolean isNewUsesRecord(int usesToCompare, Context context){
 		if(mostUses == -1){
 			try{
-				SQLiteManager.getInstance().openDB(false);
+				SQLiteManager.getInstance().openDB(false, context);
 				mostUses = PhoneUse.mostUsesInADay();
 			}
 			catch(Exception e){
@@ -49,10 +51,10 @@ public class GlobalRecordsEM {
 	 * @param timeToCompare
 	 * @return
 	 */
-	public static boolean isNewTimeRecord(long timeToCompare){
+	public static boolean isNewTimeRecord(long timeToCompare, Context context){
 		if(mostTime == -1){
 			try{
-				SQLiteManager.getInstance().openDB(false);
+				SQLiteManager.getInstance().openDB(false, context);
 				mostTime = PhoneUse.mostTimeInADay();
 			}
 			catch(Exception e){

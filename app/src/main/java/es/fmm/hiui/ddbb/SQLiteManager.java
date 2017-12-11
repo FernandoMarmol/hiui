@@ -2,9 +2,23 @@ package es.fmm.hiui.ddbb;
 
 import java.sql.SQLException;
 
+import android.Manifest;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.Service;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.text.Html;
 import android.util.Log;
+
+import es.fmm.hiui.R;
+import es.fmm.hiui.application.Main;
+import es.fmm.hiui.statistics.TodayStats;
 
 /**
  * Created by fmm on 8/2/13.
@@ -46,27 +60,29 @@ public class SQLiteManager {
 		db = helper.getReadableDatabase();
 	}
 
-	public synchronized SQLiteDatabase openDB(boolean writable) throws SQLException {
+	public synchronized SQLiteDatabase openDB(boolean writable, Context context) throws SQLException {
 		Log.d(SQLiteManager.class.getSimpleName(), "SQLiteManager - openDB");
-		try{
-			while(isInUse)
-				wait();
+		if(doIHaveStorageUsePermission(context)){
+			try{
+				while(isInUse)
+					wait();
 
-			isInUse = true;
+				isInUse = true;
 
-			if(db == null || !db.isOpen()){
-				if(writable)
+				if(db == null || !db.isOpen()){
+					if(writable)
+						write();
+					else
+						read();
+				}
+				else if(db.isOpen() && (writable && db.isReadOnly())){
+					helper.close();
 					write();
-				else
-					read();
+				}
 			}
-			else if(db.isOpen() && (writable && db.isReadOnly())){
-				helper.close();
-				write();
+			catch(InterruptedException ie){
+				ie.printStackTrace();
 			}
-		}
-		catch(InterruptedException ie){
-			ie.printStackTrace();
 		}
 
 		return db;
@@ -109,5 +125,28 @@ public class SQLiteManager {
 	public static SQLiteManager getInstance(Context ctx){
 		instance = new SQLiteManager(ctx);
 		return instance;
+	}
+
+	private static boolean doIHaveStorageUsePermission(Context context){
+		// Assume thisActivity is the current activity
+		int permissionCheck = ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+		if(permissionCheck == PackageManager.PERMISSION_GRANTED){
+			return true;
+		}
+		else{
+			PendingIntent appIntent = PendingIntent.getActivity(context, 0, new Intent(context, Main.class), 0);
+			Notification notification = new Notification.Builder(context)
+					.setContentTitle("Permisos")
+					.setContentText("Dame permisos de almacenamiento")
+					.setSmallIcon(R.drawable.ic_launcher)
+					.setDefaults(Notification.DEFAULT_ALL)
+					.setContentIntent(appIntent)
+					.build();
+
+			NotificationManager notificationManager = (NotificationManager) context.getSystemService(Service.NOTIFICATION_SERVICE);
+			notificationManager.notify(3, notification);
+			return false;
+		}
+
 	}
 }

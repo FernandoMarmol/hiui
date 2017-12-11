@@ -119,7 +119,7 @@ public class AppsUse {
 	}
 
 	public static List<AppUseBean> getAllAppUses(String date) {
-		List<AppUseBean> appUseBeans = new ArrayList<AppUseBean>();
+		List<AppUseBean> appUseBeans = new ArrayList<>();
 
 		String order = COLUMN_DATE + " DESC, " + COLUMN_RATE + " DESC";
 		String where = "";
@@ -142,7 +142,7 @@ public class AppsUse {
 	}
 
 	public static LinkedHashMap<String, Integer> getAllAppUsesToHashMap(String date) {
-		LinkedHashMap<String, Integer> appUseBeans = new LinkedHashMap<String, Integer>();
+		LinkedHashMap<String, Integer> appUseBeans = new LinkedHashMap<>();
 
 		String order = COLUMN_RATE + " DESC";
 		String where = COLUMN_DATE + " = '" + date + "'";
@@ -174,7 +174,7 @@ public class AppsUse {
 	 * @return LinkedHashMap<String, Long> En el string está el paquete de la aplicacion y en el Long, la suma total de la puntuación de la app
 	 */
 	public static LinkedHashMap<String, Long> getTotalAppsUse(int numOfApps){
-		LinkedHashMap<String, Long> hmSalida = new LinkedHashMap<String, Long>();
+		LinkedHashMap<String, Long> hmSalida = new LinkedHashMap<>();
 		
 		String[] fields = new String[2];
 		fields[0] = COLUMN_APP;

@@ -24,7 +24,7 @@ public class Launchers {
 	public static final ArrayList<String> LAUNCHERS_LIST;
 	
 	static {
-		LAUNCHERS_LIST = new ArrayList<String>();
+		LAUNCHERS_LIST = new ArrayList<>();
 		LAUNCHERS_LIST.add(LAUNCHER);
 		LAUNCHERS_LIST.add(APEX_LAUNCHER);
 		LAUNCHERS_LIST.add(GO_LAUNCHER_EX);

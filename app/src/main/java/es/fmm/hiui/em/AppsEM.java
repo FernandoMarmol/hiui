@@ -14,7 +14,7 @@ public class AppsEM {
 	public static final String APP_SYSTEMUI = "com.android.systemui";
 
 	static{
-		NON_SHOWING_APPS = new LinkedList<String>();
+		NON_SHOWING_APPS = new LinkedList<>();
 		NON_SHOWING_APPS.add(APP_SYSTEMUI); //System UI
 	}
 
@@ -24,7 +24,7 @@ public class AppsEM {
 	 * @return
 	 */
 	public static boolean isAppNotIncludedInStats(String appPackageName){
-		if(NON_SHOWING_APPS.contains(appPackageName) || Launchers.LAUNCHERS_LIST.contains(appPackageName) || appPackageName.indexOf("launcher") != -1)
+		if(NON_SHOWING_APPS.contains(appPackageName) || Launchers.LAUNCHERS_LIST.contains(appPackageName) || appPackageName.contains("launcher"))
 			return true;
 		else
 			return false;
@@ -36,7 +36,7 @@ public class AppsEM {
 	 * @return
 	 */
 	public static boolean isAppLauncher(String appPackageName){
-		if(Launchers.LAUNCHERS_LIST.contains(appPackageName) || appPackageName.indexOf("launcher") != -1)
+		if(Launchers.LAUNCHERS_LIST.contains(appPackageName) || appPackageName.contains("launcher"))
 			return true;
 		else
 			return false;

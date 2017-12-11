@@ -126,7 +126,7 @@ public class PhoneUse {
 	 * @return
 	 */
 	public static List<PhoneUseBean> getPhoneUses(String year, String month) {
-		List<PhoneUseBean> phoneUseBeans = new ArrayList<PhoneUseBean>();
+		List<PhoneUseBean> phoneUseBeans = new ArrayList<>();
 
 		String where = COLUMN_DATE + " LIKE '" + year + "" + month + "%'";
 		String order = COLUMN_DATE + " DESC, " + COLUMN_TIME_AMOUNT + " DESC";

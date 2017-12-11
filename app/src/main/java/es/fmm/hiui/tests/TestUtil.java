@@ -29,9 +29,9 @@ public class TestUtil {
 		TodayStats.timeOn = 14400000;
 	}
 	
-	public static void deleteStats(String date){
+	public static void deleteStats(String date, Context context){
 		try{
-			SQLiteManager.getInstance().openDB(false);
+			SQLiteManager.getInstance().openDB(false, context);
 			PhoneUse.deletePhoneUse(date);
 		}
 		catch(Exception e){
@@ -104,14 +104,14 @@ public class TestUtil {
 		Notification not = new Notification(R.drawable.ic_launcher, context.getString(R.string.record_time_title), java.lang.System.currentTimeMillis());
 		not.defaults = Notification.DEFAULT_ALL;
 		PendingIntent ai = PendingIntent.getActivity(context, 0, new Intent(), 0);
-		not.setLatestEventInfo(context, context.getString(R.string.record_time_title), Html.fromHtml(context.getString(R.string.record_time_text) + Util.millisecondsToTimeFormat(TodayStats.timeOn, context.getResources(), false, false) + context.getString(R.string.record_time_text2)), ai);
+		//not.setLatestEventInfo(context, context.getString(R.string.record_time_title), Html.fromHtml(context.getString(R.string.record_time_text) + Util.millisecondsToTimeFormat(TodayStats.timeOn, context.getResources(), false, false) + context.getString(R.string.record_time_text2)), ai);
 
 		nm.notify(4, not);
 	
 		Notification not2 = new Notification(R.drawable.ic_launcher, context.getString(R.string.record_uses_title), java.lang.System.currentTimeMillis());
 		not2.defaults = Notification.DEFAULT_ALL;
 		PendingIntent ai2 = PendingIntent.getActivity(context, 0, new Intent(), 0);
-		not2.setLatestEventInfo(context, context.getString(R.string.record_uses_title), Html.fromHtml(context.getString(R.string.record_uses_text) + TodayStats.onCounter + context.getString(R.string.record_uses_text2)) , ai2);
+		//not2.setLatestEventInfo(context, context.getString(R.string.record_uses_title), Html.fromHtml(context.getString(R.string.record_uses_text) + TodayStats.onCounter + context.getString(R.string.record_uses_text2)) , ai2);
 		
 		nm.notify(5, not2);
 

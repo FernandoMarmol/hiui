@@ -87,7 +87,7 @@ public class StatisticsAdapter extends ArrayAdapter<PhoneUseBean> {
 		timeTextView.setText(context.getString(R.string.statistics_row_time) + Util.millisecondsToTimeFormat(milisTime, context.getResources(), false, true));
 		timesTextView.setText(context.getString(R.string.statistics_row_times) + pub.getTimes());
 
-		RelativeLayout mainLayout = (RelativeLayout) rowView.findViewById(R.id.statsAdapterLayout);
+		/*RelativeLayout mainLayout = (RelativeLayout) rowView.findViewById(R.id.statsAdapterLayout);
 		RelativeLayout.LayoutParams lp;
 
 		if(position == SELECTED_DAY_POSITION){
@@ -140,7 +140,7 @@ public class StatisticsAdapter extends ArrayAdapter<PhoneUseBean> {
 		}
 		else{
 			mainLayout.setOnClickListener(new StatisticsListener(position));
-		}
+		}*/
 
 		return rowView;
 	}
