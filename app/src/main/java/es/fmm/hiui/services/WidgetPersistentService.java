@@ -28,6 +28,7 @@ import java.util.Locale;
 import java.util.Set;
 
 import es.fmm.hiui.R;
+import es.fmm.hiui.achievements.AchievementsChecker;
 import es.fmm.hiui.application.Constants;
 import es.fmm.hiui.application.Util;
 import es.fmm.hiui.em.AppsEM;
@@ -44,7 +45,7 @@ public class WidgetPersistentService extends Service {
 
 	private static OnOffReceiver oor = null;
 	private static HiuiSensorEventListener sel = null;
-	
+
 	private static boolean isDeviceActive = false;
 
 	@Override
@@ -67,38 +68,38 @@ public class WidgetPersistentService extends Service {
 		Log.d(WidgetPersistentService.class.getSimpleName(), "onStartCommand");
 		activateOOR(getApplicationContext());
 		activateSEL(getApplicationContext());
-		
+
 		Date time = new Date();
-		
+
 		//Si no está inicializado el día, lo hacemos y cargamos los datos para ese día
 		if(TodayStats.today == null){
 			TodayStats.newDay();
 			TodayStats.loadStats(TodayStats.today, this.getApplicationContext());
 		}
-		
+
 		//Comprobamos si estamos cambiando de dia
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd", Locale.getDefault());
 		if(Integer.parseInt(TodayStats.today) != Integer.parseInt(sdf.format(time))){
 			TodayStats.saveStats(TodayStats.today, this); //Guardamos las estadísticas de hoy
 			TodayStats.newDay(); //Empezamos estadísticas para un día nuevo
 			TodayStats.loadStats(TodayStats.today, this); //Por si acaso cargamos estadísticas que pudiese haber para ese dia nuevo (algo que nunca debería pasar)
-			
+
 			GlobalRecordsEM.reset();
 		}
 
 		String action = "";
 		if(intent != null && intent.getAction() != null)
 			action = intent.getAction();
-		
+
 		if(action.equalsIgnoreCase(Intent.ACTION_SCREEN_ON)){
 			Log.d(WidgetPersistentService.class.getSimpleName(), "onHandleIntent - SCREEN ON");
 			TodayStats.lastTimeOn = time.getTime();
 			isDeviceActive = true;
-			
+
 			WidgetUtil.setAlarmToUpdateWidget(getApplicationContext());
-			
+
 			TodayStats.onCounter++;
-			
+
 			//Intent a partir del cual se creará el PendingIntent
 			Intent intentAlarma = new Intent(getApplicationContext(), WidgetPersistentService.class);
 			//Creamos el Intent que se ejecutará repetidamente con la alarma para ejecutar el servicio
@@ -108,28 +109,29 @@ public class WidgetPersistentService extends Service {
 			AlarmManager am = (AlarmManager)(getApplicationContext().getSystemService(Context.ALARM_SERVICE));
 			am.setRepeating(AlarmManager.RTC, System.currentTimeMillis() + 1000, getApplicationContext().getResources().getInteger(R.integer.service_update_interval), pIntent);
 		}
-		
+
 		if(isDeviceActive){
 			checkForHourNotification(getApplicationContext(), TodayStats.timeOn, TodayStats.timeOn + (time.getTime() - TodayStats.lastTimeOn));
 			checkForRecords(getApplicationContext());
+
 			//Sumamos el tiempo que lleva activo
 			TodayStats.addTime(time.getTime() - TodayStats.lastTimeOn);
 			//Fijamos la ultima vez que supimos que el teléfono estaba activo en la hora actual
 			TodayStats.lastTimeOn = time.getTime();
-			
+
 			//Recuperamos la información de las apps y la guardamos
 			gatherAppsInformation(getApplicationContext());
 			TodayStats.saveStats(TodayStats.today, this);
 		}
-		
+
 		if(action.equalsIgnoreCase(Intent.ACTION_SCREEN_OFF)){
 			Log.d(WidgetPersistentService.class.getSimpleName(), "onHandleIntent - SCREEN OFF");
 			isDeviceActive = false;
 
 			WidgetUtil.cancelAlarmToUpdateWidget(getApplicationContext());
-				
+
 			TodayStats.offCounter++;
-			
+
 			//Cancelamos la alarma que ejecuta el servicio
 			Intent intentAlarma = new Intent(getApplicationContext(), WidgetPersistentService.class);
 			PendingIntent pIntent = PendingIntent.getService(getApplicationContext(), 0, intentAlarma, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -267,7 +269,7 @@ public class WidgetPersistentService extends Service {
 						else{
 							TodayStats.applicationsStats.put(info.baseActivity.getPackageName(), score);
 						}
-						
+
 						counter--;
 					}
 				}
@@ -277,7 +279,7 @@ public class WidgetPersistentService extends Service {
 
 		TodayStats.applicationsStats = sortByValueDesc(TodayStats.applicationsStats);
 	}
-	
+
 	/**
 	 * Este método envía una notificación al usuario cada vez que cumple una hora de uso del teléfono móvil
 	 * @param context
@@ -285,12 +287,12 @@ public class WidgetPersistentService extends Service {
 	 * @param spentTimeAfter
 	 */
 	@SuppressWarnings(value = { "deprecation" })
-	private void checkForHourNotification(Context context, long spentTimeBefore, long spentTimeAfter){		
+	private void checkForHourNotification(Context context, long spentTimeBefore, long spentTimeAfter){
 		boolean areNotificationsActive = PreferenceManager.getDefaultSharedPreferences(context).getBoolean(context.getString(R.string.sett_notifications), true);
 		if(areNotificationsActive){
 			int hoursBefore = (int) (spentTimeBefore / Constants.MILLISECONDS_IN_AN_HOUR);
 			int hoursAfter= (int) (spentTimeAfter / Constants.MILLISECONDS_IN_AN_HOUR);
-			
+
 			if(hoursAfter > hoursBefore){
 				Intent notificationIntent = new Intent(this, WidgetPersistentService.class);
 				PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,notificationIntent, 0);
@@ -306,8 +308,11 @@ public class WidgetPersistentService extends Service {
 				notificationManager.notify(1, notification);
 			}
 		}
+
+		//checkAchievements
+		boolean 5HoursOfUse = AchievementsChecker.check5HoursOfUseInSingleDay(spentTimeAfter);
 	}
-	
+
 	/**
 	 * Envía notificaciones al usuario en funcion de los nuevos récords establecidos
 	 * @param context

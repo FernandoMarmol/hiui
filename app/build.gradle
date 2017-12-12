@@ -2,12 +2,12 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "27.0.1"
+    buildToolsVersion "27.0.2"
 
     defaultConfig {
         applicationId "es.fmm.hiui"
-        minSdkVersion 22
-        targetSdkVersion 22
+        minSdkVersion 25
+        targetSdkVersion 25
     }
 
     buildTypes {
@@ -20,4 +20,5 @@ android {
 
 dependencies {
     compile 'com.android.support:support-v4:25.4.0'
+    implementation 'com.google.android.gms:play-services-games:11.6.0'
 }
