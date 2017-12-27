@@ -39,7 +39,7 @@ public class StatisticsAdapter extends ArrayAdapter<PhoneUseBean> {
 
 		instance = this;
 	}
-	
+
 	@Override
 	public int getCount() {
 		return values.size();
@@ -84,7 +84,7 @@ public class StatisticsAdapter extends ArrayAdapter<PhoneUseBean> {
 		}
 
 		long milisTime = pub.getTimeAmount();
-		timeTextView.setText(context.getString(R.string.statistics_row_time) + Util.millisecondsToTimeFormat(milisTime, context.getResources(), false, true));
+		timeTextView.setText(context.getString(R.string.statistics_row_time) + Util.millisecondsToTimeFormat(milisTime, context.getResources(), false, true, true));
 		timesTextView.setText(context.getString(R.string.statistics_row_times) + pub.getTimes());
 
 		/*RelativeLayout mainLayout = (RelativeLayout) rowView.findViewById(R.id.statsAdapterLayout);
@@ -114,14 +114,14 @@ public class StatisticsAdapter extends ArrayAdapter<PhoneUseBean> {
 					tv.setSingleLine();
 					tv.setEllipsize(TextUtils.TruncateAt.MARQUEE);
 					tv.setTextColor(context.getResources().getColor(R.color.statsDayAppsTextColor));
-					
+
 					try {
 						tv.setText(pm.getApplicationLabel(pm.getApplicationInfo(aub.getApp(), PackageManager.GET_META_DATA)) + " - " + Util.getAppPercentageOfUse(aub.getApp(), AppsUse.getAllAppUsesToHashMap(aub.getDate()), 1) + " % \r\n");
 					}
 					catch(Exception e){
 						tv.setText(aub.getApp() + " - " + Util.getAppPercentageOfUse(aub.getApp(), AppsUse.getAllAppUsesToHashMap(aub.getDate()), 1) + " % \r\n");
 					}
-					
+
 					tv.setPadding(0, 0, 0, 0);
 					ll.addView(tv);
 				}

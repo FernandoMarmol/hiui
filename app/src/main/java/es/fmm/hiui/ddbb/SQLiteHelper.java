@@ -12,8 +12,12 @@ import es.fmm.hiui.ddbb.tables.PhoneUse;
  */
 public class SQLiteHelper extends SQLiteOpenHelper {
 
-	private static final int DATABASE_VERSION = 1;
+	private static final int DATABASE_VERSION_FIRST = 1; //PRIMERA VERSION DE LA APLICACION
+	private static final int DATABASE_VERSION_UPDATE_1 = 2; //PRIMERA GRAN ACTUALIZACION
 	private static final String DATABASE_NAME;
+
+	private static final String PHONE_USE_NEW_COLUMN_WEEK_NUMBER = "ALTER TABLE " + PhoneUse.TABLE_NAME + " ADD COLUMN " + PhoneUse.COLUMN_WEEK_NUMBER + " integer default 0 not null";
+	private static final String PHONE_USE_NEW_COLUMN_WEEK_NUMBER_UPDATING_PREVIOUS_DATA = "UPDATE " + PhoneUse.TABLE_NAME + " SET " + PhoneUse.COLUMN_WEEK_NUMBER + " = (substr(" + PhoneUse.COLUMN_DATE + ", 1, 4) || strftime('%W', substr(" + PhoneUse.COLUMN_DATE + ", 1, 4) || '-' || substr(" + PhoneUse.COLUMN_DATE + ", 5, 2) || '-' || substr(" + PhoneUse.COLUMN_DATE + ", 7)))";
 
 	static{
 		//TODO: Crear una preferencia que nos indique dónde está creada la BBDD una vez que lo está
@@ -25,7 +29,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 	}
 
 	public SQLiteHelper(Context context){
-		super(context, DATABASE_NAME, null, DATABASE_VERSION);
+		super(context, DATABASE_NAME, null, DATABASE_VERSION_UPDATE_1);
 	}
 
 	@Override
@@ -35,8 +39,11 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 	}
 
 	@Override
-	public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i2) {
-		//Future
+	public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
+		if(oldVersion == DATABASE_VERSION_FIRST && newVersion == DATABASE_VERSION_UPDATE_1){
+			sqLiteDatabase.execSQL(PHONE_USE_NEW_COLUMN_WEEK_NUMBER);
+			sqLiteDatabase.execSQL(PHONE_USE_NEW_COLUMN_WEEK_NUMBER_UPDATING_PREVIOUS_DATA);
+		}
 	}
 
 	@Override

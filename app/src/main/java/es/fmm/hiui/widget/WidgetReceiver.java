@@ -18,6 +18,8 @@ import android.util.Log;
 import android.widget.RemoteViews;
 import es.fmm.hiui.R;
 import es.fmm.hiui.application.Util;
+import es.fmm.hiui.ddbb.SQLiteManager;
+import es.fmm.hiui.ddbb.tables.PhoneUse;
 import es.fmm.hiui.services.WidgetPersistentService;
 import es.fmm.hiui.settings.Settings;
 import es.fmm.hiui.statistics.Statistics;
@@ -61,7 +63,7 @@ public class WidgetReceiver extends AppWidgetProvider{
 		RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.hiui_widget);
 
 		//ACTUALIZAMOS EL VALOR DE LOS TEXTOS DEL WIDGET (EMPEZAMOS POR LAS APPS)
-		int contador = 0;
+		/*int contador = 0;
 		StringBuilder apps = new StringBuilder();
 		Set<String> set = TodayStats.applicationsStats.keySet();
 		for (String key : set) {
@@ -77,10 +79,23 @@ public class WidgetReceiver extends AppWidgetProvider{
 		}
 
 		if(apps.toString().trim().length() > 0)
-			views.setTextViewText(R.id.tasksStatus, apps.toString());
-		
+			views.setTextViewText(R.id.tasksStatus, apps.toString());*/
+
 		views.setTextViewText(R.id.timesON, TodayStats.onCounter + "");
-		views.setTextViewText(R.id.timeON,  Util.millisecondsToTimeFormat(TodayStats.timeOn, context.getResources(), false, false));
+		views.setTextViewText(R.id.timeON,  Util.millisecondsToTimeFormat(TodayStats.timeOn, context.getResources(), false, false, true));
+		try{
+			SQLiteManager.getInstance().openDB(false, context);
+			views.setTextViewText(R.id.averageUsesPerDayThisYear, String.valueOf(PhoneUse.averageUsesPerDay(TodayStats.getYear())));
+			views.setTextViewText(R.id.averageTimePerDayThisYear, Util.millisecondsToTimeFormat(PhoneUse.averageTimePerDay(TodayStats.getYear()), context.getResources(), false, true, false));
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		finally{
+			SQLiteManager.getInstance().closeDB();
+		}
+
+
 
 		// Register an onClickListener para actualizar el widget al tocar su layout
 		Intent intent;
@@ -105,7 +120,7 @@ public class WidgetReceiver extends AppWidgetProvider{
 		intentSettings.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		PendingIntent pendingIntentSettings = PendingIntent.getActivity(context, 0, intentSettings, PendingIntent.FLAG_UPDATE_CURRENT);
 		views.setOnClickPendingIntent(R.id.buttonSettings, pendingIntentSettings);
-		
+
 		//Lanzamos la actualizacion del Widget
 		appWidgetManager.updateAppWidget(appWidgetIds, views);
 

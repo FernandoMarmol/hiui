@@ -8,6 +8,7 @@ import java.util.Set;
 import es.fmm.hiui.R;
 import android.content.Context;
 import android.content.res.Resources;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.WindowManager;
 
@@ -166,33 +167,48 @@ public class Util {
 
 		return parsePercentage(percentage, numDecimals);
 	}
-	
+
 	/**
 	 * Parses milliseconds to tima in format XXh: XXm: XXs
 	 * @param milliseconds
 	 * @param resources - recursos de contexto para sacar textos de idioma (puede ser nulo, pero no habrá textos)
 	 * @param completeText - Indica si queremos el texto horas minutos y segundos completo o sólo h m s
 	 * @param withSpaces - Indica si queremos que haya un espacio entre cada texto
+	 * @param showZeroValues - Indica si queremos que muestre o no los valores iguales a cero. Es decir, si viene a false, en 0h:0m:5s sólo mostraría 5s. Siempre se pintan los segundos, aunque valgan 0
 	 * @return
 	 */
-	public static String millisecondsToTimeFormat(long milliseconds, Resources resources, boolean completeText, boolean withSpaces){
-		
+	public static String millisecondsToTimeFormat(long milliseconds, Resources resources, boolean completeText, boolean withSpaces, boolean showZeroValues){
+
 		String space = withSpaces?" ":"";
-		
-		String time = null;
-		
+
+		String time = "";
+
 		int seconds = (int) (milliseconds / 1000) % 60 ;
 		int minutes = (int) ((milliseconds / (1000*60)) % 60);
 		int hours   = (int) ((milliseconds / (1000*60*60)));
-		
-		if(completeText && resources != null)
-			time = hours + space + resources.getString(R.string.others_hours) + space + ":" + space + minutes + space + resources.getString(R.string.others_minutes) + space + ":" + space + seconds + space + resources.getString(R.string.others_seconds);
-		else
-			time = hours + space + "h" + space + ":" + space + minutes + space + "m" + space + ":" + space + seconds + space + "s";
-		
+
+		try {
+
+			boolean printIsMandatory = false;
+			if (hours > 0) {
+				printIsMandatory = true;
+				time += hours + space + (completeText?resources.getString(R.string.others_hours):"h") + space + ":";
+			}
+			if (printIsMandatory || minutes > 0) {
+				time += space + minutes + space + (completeText?resources.getString(R.string.others_minutes):"m") + space + ":";
+			}
+
+			//Siempre se pintan los segundos
+			time += space + seconds + space + (completeText?resources.getString(R.string.others_seconds):"s");
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			Log.e(Util.class.getSimpleName(), "millisecondsToTimeFormat - Ha ocurrido un error", e);
+		}
+
 		return time;
 	}
-	
+
 	/**
 	 * Método que recoge un double que es el porcentaje de un cálculo y lo devuelve como String formateado
 	 * @param value

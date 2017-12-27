@@ -18,6 +18,10 @@ import android.preference.PreferenceManager;
 import android.text.Html;
 import android.util.Log;
 
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.games.Games;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -66,6 +70,18 @@ public class WidgetPersistentService extends Service {
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		Log.d(WidgetPersistentService.class.getSimpleName(), "onStartCommand");
+
+		//Nuevo desarrollo
+		// Configure sign-in to request the user's ID, email address, and basic
+		// profile. ID and basic profile are included in DEFAULT_SIGN_IN.
+		/*GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+				.requestEmail()
+				.build();
+
+		// Build a GoogleSignInClient with the options specified by gso.
+		mGoogleSignInClient = GoogleSignIn.getClient(this, gso);*/
+
+
 		activateOOR(getApplicationContext());
 		activateSEL(getApplicationContext());
 
@@ -310,7 +326,8 @@ public class WidgetPersistentService extends Service {
 		}
 
 		//checkAchievements
-		boolean 5HoursOfUse = AchievementsChecker.check5HoursOfUseInSingleDay(spentTimeAfter);
+		//Games.getAchievementsClient(context, GoogleSignIn.getLastSignedInAccount(this);
+		//boolean 5HoursOfUse = AchievementsChecker.check5HoursOfUseInSingleDay(spentTimeAfter);
 	}
 
 	/**
@@ -322,11 +339,11 @@ public class WidgetPersistentService extends Service {
 		boolean areNotificationsActive = PreferenceManager.getDefaultSharedPreferences(context).getBoolean(context.getString(R.string.sett_notifications), true);
 		boolean isTodayInstallationDay = (PreferenceManager.getDefaultSharedPreferences(context).getString(context.getString(R.string.sett_installation_day), "000000").equalsIgnoreCase(TodayStats.today)) ? true : false;
 		if (areNotificationsActive && !isTodayInstallationDay) {
-			if (GlobalRecordsEM.isNewTimeRecord(TodayStats.timeOn, context)) {
+			if (GlobalRecordsEM.isNewTimeRecord(TodayStats.timeOn, TodayStats.getYear(), context)) {
 				PendingIntent appIntent = PendingIntent.getActivity(context, 0, new Intent(), 0);
 				Notification notification = new Notification.Builder(context)
 						.setContentTitle(context.getString(R.string.record_time_title))
-						.setContentText(Html.fromHtml(context.getString(R.string.record_time_text) + Util.millisecondsToTimeFormat(TodayStats.timeOn, context.getResources(), false, false) + context.getString(R.string.record_time_text2)))
+						.setContentText(Html.fromHtml(context.getString(R.string.record_time_text) + Util.millisecondsToTimeFormat(TodayStats.timeOn, context.getResources(), false, false, false) + context.getString(R.string.record_time_text2)))
 						.setSmallIcon(R.drawable.ic_launcher)
 						.setDefaults(Notification.DEFAULT_ALL)
 						.setContentIntent(appIntent)
@@ -349,6 +366,8 @@ public class WidgetPersistentService extends Service {
 				NotificationManager notificationManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
 				notificationManager.notify(3, notification);
 			}
+
+			//if(GlobalRecordsEM){}
 
 
 		}

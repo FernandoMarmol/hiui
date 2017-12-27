@@ -80,7 +80,7 @@ public class Main extends Activity implements ActivityCompat.OnRequestPermission
 			tv.setText(getString(R.string.main_time));
 
 			tv = (TextView) findViewById(R.id.time);
-			tv.setText(Util.millisecondsToTimeFormat(Long.parseLong(data[0]), getResources(), true, true));
+			tv.setText(Util.millisecondsToTimeFormat(Long.parseLong(data[0]), getResources(), true, true, true));
 
 			tv = (TextView) findViewById(R.id.daysTitle);
 			tv.setText(getString(R.string.main_days));

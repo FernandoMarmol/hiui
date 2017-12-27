@@ -74,7 +74,69 @@
             android:textColor="@android:color/white"
             android:textSize="16sp" />
 
-        <LinearLayout
+        <RelativeLayout
+            android:id="@+id/useInfoLayout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/timeON"
+            android:layout_marginTop="6dp"
+            android:clickable="false">
+
+            <LinearLayout
+                android:id="@+id/useInfoLayoutLine1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/averageUsesPerDayThisYearTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:text="@string/avg_daily_uses"
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/averageUsesPerDayThisYear"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="25dp"
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/useInfoLayoutLine2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/useInfoLayoutLine1"
+                android:layout_marginTop="6dp">
+
+                <TextView
+                    android:id="@+id/averageTimePerDayThisYearTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:text="@string/avg_daily_time"
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/averageTimePerDayThisYear"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="25dp"
+                    android:textColor="@android:color/white"
+                    android:text="34122"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <!-- <LinearLayout
             android:id="@+id/tasksStatusLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -91,7 +153,7 @@
                 android:layout_marginBottom="8dp"
                 android:text="@string/pending_info"
                 android:textColor="@android:color/primary_text_dark" />
-        </LinearLayout>
+        </LinearLayout> -->
     </RelativeLayout>
 
     <!-- CAPA PARA TOCAR Y ACTUALIZAR EL WIDGET Y PARA EL BOTON DE ESTADISTICAS-->
@@ -100,11 +162,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:paddingBottom="8dp"
         android:alpha="1"
-        android:focusable="true"
         android:clickable="true"
-        android:orientation="vertical" >
+        android:focusable="true"
+        android:orientation="vertical"
+        android:paddingBottom="8dp">
 
         <ImageButton
             android:id="@+id/buttonSettings"
@@ -116,11 +178,11 @@
             android:layout_marginLeft="6dip"
             android:alpha="0.8"
             android:background="@null"
-            android:focusable="true"
             android:clickable="true"
             android:contentDescription="@string/widget_button_all_statistics"
+            android:focusable="true"
             android:src="@android:drawable/ic_menu_manage" />
-        
+
         <ImageButton
             android:id="@+id/buttonStats"
             android:layout_width="wrap_content"
@@ -131,9 +193,9 @@
             android:layout_marginRight="6dip"
             android:alpha="0.8"
             android:background="@null"
-            android:focusable="true"
             android:clickable="true"
             android:contentDescription="@string/widget_button_all_statistics"
+            android:focusable="true"
             android:src="@android:drawable/ic_menu_more" />
     </RelativeLayout>
 

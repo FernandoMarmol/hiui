@@ -1,6 +1,7 @@
 package es.fmm.hiui.statistics;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -32,6 +33,20 @@ public class TodayStats {
 	public static long lastTimeOn = 0; //Ultima vez que se tiene consciencia de que el teléfono estuviese activo (pantalla encendida)
 
 	public static LinkedHashMap<String, Integer> applicationsStats = new LinkedHashMap<>(); //Estadisticas de uso de las apps
+
+	/**
+	 * A partir del atributo today, nos dice en qué año estamos
+	 * @return
+	 */
+	public static int getYear(){
+		if(today == null){
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(new Date());
+
+			return cal.get(Calendar.YEAR);
+		}
+		return Integer.parseInt(today.substring(0, 4));
+	}
 
 	/**
 	 * This method is called when the day is off and statistics must be initialized to store a new day statistics
@@ -133,14 +148,14 @@ public class TodayStats {
 				return 1;
 		}
 	}
-	
+
 	/**
 	 * Método que se encarga de sumar el tiempo de uso del teléfono
 	 * @param milliseconds
 	 */
 	public static void addTime(long milliseconds){
-		Log.d(TodayStats.class.getSimpleName(), "Tiempo ANTES " + Util.millisecondsToTimeFormat(timeOn, null, false, false));
+		Log.d(TodayStats.class.getSimpleName(), "Tiempo ANTES " + Util.millisecondsToTimeFormat(timeOn, null, false, false, true));
 		timeOn += milliseconds;
-		Log.d(TodayStats.class.getSimpleName(), "Tiempo DESPUES " + Util.millisecondsToTimeFormat(timeOn, null, false, false));
+		Log.d(TodayStats.class.getSimpleName(), "Tiempo DESPUES " + Util.millisecondsToTimeFormat(timeOn, null, false, false, true));
 	}
 }
