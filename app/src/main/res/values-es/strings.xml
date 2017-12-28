@@ -39,10 +39,6 @@
 	<string name="about_market_button">Danos tu opinión</string>
 	<string name="about_ok_button">Ok</string>
 
-	<!-- NOTIFICATIONS -->
-	<string name="notification_title">Tiempo de uso del móvil hoy</string>
-	<string name="notification_message_hours">&#160;hora/s de uso</string>
-
 	<!-- MONTHS -->
 	<string name="month_january">Enero</string>
 	<string name="month_february">Febrero</string>
@@ -70,7 +66,16 @@
 	<string name="others_minutes">minutos</string>
 	<string name="others_seconds">segundos</string>
 
-	<!-- RECORDS -->
+	<!-- NOTIFICATIONS -->
+	<!-- USAGE NOTIFICATIONS -->
+	<string name="notification_title">Tiempo de uso del móvil hoy</string>
+	<string name="notification_message_hours">&#160;hora/s de uso</string>
+	<string name="average_uses_beaten_title">Más uso que el normal</string>
+	<string name="average_uses_beaten_text"><![CDATA[¡No ha estado hoy quieto el móvil en el bolsillo!]]></string>
+	<string name="average_time_beaten_title">Más uso que el normal</string>
+	<string name="average_time_beaten_text"><![CDATA[Hoy has usado el móvil bastante más de lo normal]]></string>
+
+	<!-- RECORD NOTIFICATIONS -->
 	<string name="record_time_title">Récord usando el móvil!</string>
 	<string name="record_time_text"><![CDATA[Vaya día! Llevas <b>]]></string>
 	<string name="record_time_text2"><![CDATA[</b> con el móvil en la mano!]]></string>

@@ -4,6 +4,7 @@ import android.content.Context;
 
 import es.fmm.hiui.ddbb.SQLiteManager;
 import es.fmm.hiui.ddbb.tables.PhoneUse;
+import es.fmm.hiui.statistics.TodayStats;
 
 /**
  * @author fmm
@@ -17,6 +18,9 @@ public class GlobalRecordsEM {
 
 	private static int mostUses = -1; //-1 indica que no se ha cargado el dato y -2, que el record ya se ha batido hoy
 	private static long mostTime = -1; //-1 indica que no se ha cargado el dato y -2, que el record ya se ha batido hoy
+
+	private static boolean notificationAverageTimeDailyAlreadyShowedToday = false;
+	private static boolean notificationAverageUsesDailyAlreadyShowedToday = false;
 
 	/**
 	 * Nos dice si se ha batido hoy el número de usos en un día
@@ -75,10 +79,63 @@ public class GlobalRecordsEM {
 		return isRecord;
 	}
 
-	/*public static String mondayMessage(Context context){
-		StringBuilder sb = new StringBuilder();
+	/**
+	 * Nos dice si se ha superado la media de usos del teléfono en un día<br>
+	 * La notificación sale si se supera la media diaria de un año concreto en un 15%
+	 * @param usesToCompare - Numero de usos que hay que comparar
+	 * @param year - Año con el que comparar la media diaria
+	 * @return
+	 */
+	public static boolean isAverageDailyUsesBeaten(int usesToCompare, int year, Context context){
+		int avgUses = 0;
 
-	}*/
+		if(!notificationAverageUsesDailyAlreadyShowedToday){
+			try{
+				SQLiteManager.getInstance().openDB(false, context);
+				avgUses = PhoneUse.averageUsesPerDay(year);
+			}
+			catch(Exception e){
+				e.printStackTrace();
+			}
+			finally{
+				SQLiteManager.getInstance().closeDB();
+			}
+			if(usesToCompare >= (avgUses+(avgUses/(100/15)))){
+				notificationAverageUsesDailyAlreadyShowedToday = true;
+			}
+		}
+
+		return notificationAverageUsesDailyAlreadyShowedToday;
+	}
+
+	/**
+	 * Nos dice si se ha superado la media de tiempo de uso del teléfono en un día<br>
+	 * La notificación sale si se supera la media diaria de un año concreto en un 10%
+	 * @param timeToCompare - Tiempo de uso que hay que comparar
+	 * @param year - Año con el que comparar la media diaria
+	 * @return
+	 */
+	public static boolean isAverageDailyTimeBeaten(long timeToCompare, int year, Context context){
+		long avgTime = 0;
+
+		if(!notificationAverageTimeDailyAlreadyShowedToday){
+			try{
+				SQLiteManager.getInstance().openDB(false, context);
+				avgTime = PhoneUse.averageTimePerDay(year);
+			}
+			catch(Exception e){
+				e.printStackTrace();
+			}
+			finally{
+				SQLiteManager.getInstance().closeDB();
+			}
+			if(timeToCompare >= (avgTime+(avgTime/10))){
+				notificationAverageTimeDailyAlreadyShowedToday = true;
+			}
+		}
+
+		return notificationAverageTimeDailyAlreadyShowedToday;
+	}
 
 	/**
 	 * Este método debe llamarse al cambiar de día
@@ -86,6 +143,9 @@ public class GlobalRecordsEM {
 	public static void reset(){
 		mostUses = -1;
 		mostTime = -1;
+
+		notificationAverageUsesDailyAlreadyShowedToday = false;
+		notificationAverageTimeDailyAlreadyShowedToday = false;
 	}
 
 }

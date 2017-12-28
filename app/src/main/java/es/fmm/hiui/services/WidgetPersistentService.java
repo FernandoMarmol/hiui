@@ -352,6 +352,21 @@ public class WidgetPersistentService extends Service {
 				NotificationManager notificationManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
 				notificationManager.notify(2, notification);
 			}
+			else {
+				if(GlobalRecordsEM.isAverageDailyTimeBeaten(TodayStats.timeOn, TodayStats.getYear(), context)){
+					PendingIntent appIntent = PendingIntent.getActivity(context, 0, new Intent(), 0);
+					Notification notification = new Notification.Builder(context)
+							.setContentTitle(context.getString(R.string.average_time_beaten_title))
+							.setContentText(context.getString(R.string.average_time_beaten_text))
+							.setSmallIcon(R.drawable.ic_launcher)
+							.setDefaults(Notification.DEFAULT_ALL)
+							.setContentIntent(appIntent)
+							.build();
+
+					NotificationManager notificationManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
+					notificationManager.notify(3, notification);
+				}
+			}
 
 			if (GlobalRecordsEM.isNewUsesRecord(TodayStats.onCounter, context)) {
 				PendingIntent appIntent = PendingIntent.getActivity(context, 0, new Intent(), 0);
@@ -364,12 +379,23 @@ public class WidgetPersistentService extends Service {
 						.build();
 
 				NotificationManager notificationManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
-				notificationManager.notify(3, notification);
+				notificationManager.notify(2, notification);
 			}
+			else {
+				if(GlobalRecordsEM.isAverageDailyUsesBeaten(TodayStats.onCounter, TodayStats.getYear(), context)){
+					PendingIntent appIntent = PendingIntent.getActivity(context, 0, new Intent(), 0);
+					Notification notification = new Notification.Builder(context)
+							.setContentTitle(context.getString(R.string.average_uses_beaten_title))
+							.setContentText(context.getString(R.string.average_uses_beaten_text))
+							.setSmallIcon(R.drawable.ic_launcher)
+							.setDefaults(Notification.DEFAULT_ALL)
+							.setContentIntent(appIntent)
+							.build();
 
-			//if(GlobalRecordsEM){}
-
-
+					NotificationManager notificationManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
+					notificationManager.notify(3, notification);
+				}
+			}
 		}
 
 		/* Ejemplo de notificación con canales - Android SDK 27 Oreo

@@ -4,7 +4,7 @@
 	<string name="app_name">How I Use It</string>
 
 	<!-- WIDGET -->
-	<string name="title_general">Today\'s device use</string>
+	<string name="title_general">Today\'s phone use</string>
 	<string name="time_on_1">spent time</string>
 	<string name="times_on_1">times used it</string>
 	<string name="pending_info">(&#8230;wait&#8230;)</string>
@@ -22,15 +22,15 @@
 	<!-- STATISTICS -->
 	<string name="statistics_title">Statistics</string>
 	<string name="statistics_row_day">Day&#160;</string>
-	<string name="statistics_row_time">Spent time with device:&#160;</string>
-	<string name="statistics_row_times">Times you used the device:&#160;</string>
+	<string name="statistics_row_time">Spent time with phone:&#160;</string>
+	<string name="statistics_row_times">Times you used the phone:&#160;</string>
 	<string name="statistics_month_prompt">[Select a month&#8230;]</string>
 	<string name="statistics_year_prompt">[Select a year&#8230;]</string>
 
 	<!-- SETTINGS -->
 	<string name="settings">Settings</string>
 	<string name="settings_title">Settings</string>
-	<string name="settings_notifications">Device use notification</string>
+	<string name="settings_notifications">Phone use notification</string>
 	<string name="settings_notifications_on">Use notifications are ON</string>
 	<string name="settings_notifications_off">Use notifications are OFF</string>
 
@@ -38,10 +38,6 @@
 	<string name="about_text">Nowadays our mobile phone has become an inseparable fellow. We dedicate much time to it, time we borrow from other stuff. Many times we are not conscious it is a priority over many things. This app just want to put the info in a visible spot to let you know the way you use the phone. From that point each one has to make some use rules and habits to take benefit instead of becoming a problem. If there is not any problem with it, then I hope the app could be of help in other way. Contact: howiuseit.app@gmail.com</string>
 	<string name="about_market_button">Please, let us know</string>
 	<string name="about_ok_button">OK</string>
-
-	<!-- NOTIFICATIONS -->
-	<string name="notification_title">Today\'s phone use</string>
-	<string name="notification_message_hours">&#160;hour/s of use</string>
 
 	<!-- MONTHS -->
 	<string name="month_january">January</string>
@@ -70,12 +66,21 @@
 	<string name="others_minutes">minutes</string>
 	<string name="others_seconds">seconds</string>
 
-	<!-- RECORDS -->
-	<string name="record_time_title">Record using the device!</string>
+	<!-- NOTIFICATIONS -->
+	<!-- USAGE NOTIFICATIONS -->
+	<string name="notification_title">Today\'s phone use</string>
+	<string name="notification_message_hours">&#160;hour/s of use</string>
+	<string name="average_uses_beaten_title">Used your phone more than average</string>
+	<string name="average_uses_beaten_text"><![CDATA[Your phone could not stand in the same place twice today!]]></string>
+	<string name="average_time_beaten_title">Used your phone more than average</string>
+	<string name="average_time_beaten_text"><![CDATA[Today you used your phone notoriously more than average]]></string>
+
+	<!-- RECORD NOTIFICATIONS-->
+	<string name="record_time_title">Record using the phone!</string>
 	<string name="record_time_text"><![CDATA[What a day! You\'ve been <b>]]></string>
 	<string name="record_time_text2"><![CDATA[</b> hands on it!]]></string>
-	<string name="record_uses_title">Record using the device!</string>
+	<string name="record_uses_title">Record using the phone!</string>
 	<string name="record_uses_text"><![CDATA[You did take the phone <b>]]></string>
-	<string name="record_uses_text2"><![CDATA[</b> times today! Choppy day uh?!]]></string>
+	<string name="record_uses_text2"><![CDATA[</b> times today! Choppy day huh?!]]></string>
 
 </resources>
