@@ -81,7 +81,9 @@ public class GlobalRecordsEM {
 
 	/**
 	 * Nos dice si se ha superado la media de usos del teléfono en un día<br>
-	 * La notificación sale si se supera la media diaria de un año concreto en un 15%
+	 * Condiciones para que salga la notificación:
+	 * - Sale si se supera la media diaria de un año concreto en un 15%
+	 * - Sale si el numero de usos supera los 10 usos
 	 * @param usesToCompare - Numero de usos que hay que comparar
 	 * @param year - Año con el que comparar la media diaria
 	 * @return
@@ -110,7 +112,9 @@ public class GlobalRecordsEM {
 
 	/**
 	 * Nos dice si se ha superado la media de tiempo de uso del teléfono en un día<br>
-	 * La notificación sale si se supera la media diaria de un año concreto en un 10%
+	 * Condiciones para que salga la notificación:
+	 *  - Sale si se supera la media diaria de un año concreto en un 10%
+	 *  - Sale si ese tiempo supera los 10 minutos de uso en un día
 	 * @param timeToCompare - Tiempo de uso que hay que comparar
 	 * @param year - Año con el que comparar la media diaria
 	 * @return
@@ -129,7 +133,7 @@ public class GlobalRecordsEM {
 			finally{
 				SQLiteManager.getInstance().closeDB();
 			}
-			if(timeToCompare >= (avgTime+(avgTime/10))){
+			if(timeToCompare >= (avgTime+(avgTime/10)) && timeToCompare >= 600000){
 				notificationAverageTimeDailyAlreadyShowedToday = true;
 			}
 		}

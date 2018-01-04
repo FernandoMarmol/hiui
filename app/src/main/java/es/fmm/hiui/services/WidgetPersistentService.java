@@ -18,10 +18,6 @@ import android.preference.PreferenceManager;
 import android.text.Html;
 import android.util.Log;
 
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.games.Games;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -32,7 +28,6 @@ import java.util.Locale;
 import java.util.Set;
 
 import es.fmm.hiui.R;
-import es.fmm.hiui.achievements.AchievementsChecker;
 import es.fmm.hiui.application.Constants;
 import es.fmm.hiui.application.Util;
 import es.fmm.hiui.em.AppsEM;
@@ -62,7 +57,7 @@ public class WidgetPersistentService extends Service {
 	public void onDestroy() {
 		Log.d(WidgetPersistentService.class.getSimpleName(), "onDestroy");
 		deactivateOOR(getApplicationContext());
-		deactivateSEL(getApplicationContext());
+		//deactivateSEL(getApplicationContext());
 		TodayStats.saveStats(TodayStats.today, this);
 		super.onDestroy();
 	}
@@ -71,19 +66,8 @@ public class WidgetPersistentService extends Service {
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		Log.d(WidgetPersistentService.class.getSimpleName(), "onStartCommand");
 
-		//Nuevo desarrollo
-		// Configure sign-in to request the user's ID, email address, and basic
-		// profile. ID and basic profile are included in DEFAULT_SIGN_IN.
-		/*GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-				.requestEmail()
-				.build();
-
-		// Build a GoogleSignInClient with the options specified by gso.
-		mGoogleSignInClient = GoogleSignIn.getClient(this, gso);*/
-
-
 		activateOOR(getApplicationContext());
-		activateSEL(getApplicationContext());
+		//activateSEL(getApplicationContext());
 
 		Date time = new Date();
 
@@ -324,10 +308,6 @@ public class WidgetPersistentService extends Service {
 				notificationManager.notify(1, notification);
 			}
 		}
-
-		//checkAchievements
-		//Games.getAchievementsClient(context, GoogleSignIn.getLastSignedInAccount(this);
-		//boolean 5HoursOfUse = AchievementsChecker.check5HoursOfUseInSingleDay(spentTimeAfter);
 	}
 
 	/**

@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools"
     package="es.fmm.hiui"
     android:installLocation="auto"
-    android:versionCode="10"
-    android:versionName="2.0">
+    android:versionCode="11"
+    android:versionName="2.0.1">
 
     <!-- installing in the SD Card kills the app process and services running below it and those services may not restart after mass storage -->
 
@@ -11,12 +11,11 @@
         android:minSdkVersion="25"
         android:targetSdkVersion="25" />
 
-    <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_INTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <!-- <uses-permission android:name="android.permission.GET_ACCOUNTS" /> -->
 
     <application
         android:name=".application.HiuiApplication"

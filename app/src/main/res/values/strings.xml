@@ -5,8 +5,8 @@
 
     <!-- PROPERTIES -->
     <string name="title_general">Today\'s phone use</string>
-    <string name="time_on_1">spent time</string>
-    <string name="times_on_1">times used it</string>
+    <string name="time_on_1">Spent time</string>
+    <string name="times_on_1">Times used it</string>
 	<string name="pending_info">(&#8230;wait&#8230;)</string>
 	<string name="avg_daily_uses">Daily uses average</string>
 	<string name="avg_daily_time">Daily time average</string>
@@ -78,7 +78,7 @@
 	<!-- RECORD NOTIFICATIONS-->
 	<string name="record_time_title">Record using the phone!</string>
 	<string name="record_time_text"><![CDATA[What a day! You\'ve been <b>]]></string>
-	<string name="record_time_text2"><![CDATA[</b> hands on it!]]></string>
+	<string name="record_time_text2"><![CDATA[</b> with your hands on the phone!]]></string>
 	<string name="record_uses_title">Record using the phone!</string>
 	<string name="record_uses_text"><![CDATA[You did take the phone <b>]]></string>
 	<string name="record_uses_text2"><![CDATA[</b> times today! Choppy day huh?!]]></string>

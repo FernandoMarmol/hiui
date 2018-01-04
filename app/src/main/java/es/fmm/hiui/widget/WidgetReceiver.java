@@ -86,7 +86,7 @@ public class WidgetReceiver extends AppWidgetProvider{
 		try{
 			SQLiteManager.getInstance().openDB(false, context);
 			views.setTextViewText(R.id.averageUsesPerDayThisYear, String.valueOf(PhoneUse.averageUsesPerDay(TodayStats.getYear())));
-			views.setTextViewText(R.id.averageTimePerDayThisYear, Util.millisecondsToTimeFormat(PhoneUse.averageTimePerDay(TodayStats.getYear()), context.getResources(), false, true, false));
+			views.setTextViewText(R.id.averageTimePerDayThisYear, Util.millisecondsToTimeFormat(PhoneUse.averageTimePerDay(TodayStats.getYear()), context.getResources(), false, false, false));
 		}
 		catch(Exception e){
 			e.printStackTrace();
