@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools"
     package="es.fmm.hiui"
     android:installLocation="auto"
-    android:versionCode="11"
-    android:versionName="2.0.1">
+    android:versionCode="13"
+    android:versionName="2.0.3">
 
     <!-- installing in the SD Card kills the app process and services running below it and those services may not restart after mass storage -->
 

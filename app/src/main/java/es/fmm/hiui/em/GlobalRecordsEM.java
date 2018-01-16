@@ -18,9 +18,8 @@ public class GlobalRecordsEM {
 
 	private static int mostUses = -1; //-1 indica que no se ha cargado el dato y -2, que el record ya se ha batido hoy
 	private static long mostTime = -1; //-1 indica que no se ha cargado el dato y -2, que el record ya se ha batido hoy
-
-	private static boolean notificationAverageTimeDailyAlreadyShowedToday = false;
-	private static boolean notificationAverageUsesDailyAlreadyShowedToday = false;
+	private static long averageTimeDaily = -1; //-1 indica que no se ha cargado el dato y -2, que el record ya se ha batido hoy
+	private static long averageUsesDaily = -1; //-1 indica que no se ha cargado el dato y -2, que el record ya se ha batido hoy
 
 	/**
 	 * Nos dice si se ha batido hoy el número de usos en un día
@@ -89,12 +88,10 @@ public class GlobalRecordsEM {
 	 * @return
 	 */
 	public static boolean isAverageDailyUsesBeaten(int usesToCompare, int year, Context context){
-		int avgUses = 0;
-
-		if(!notificationAverageUsesDailyAlreadyShowedToday){
+		if(averageUsesDaily == -1){
 			try{
 				SQLiteManager.getInstance().openDB(false, context);
-				avgUses = PhoneUse.averageUsesPerDay(year);
+				averageUsesDaily = PhoneUse.averageUsesPerDay(year);
 			}
 			catch(Exception e){
 				e.printStackTrace();
@@ -102,12 +99,15 @@ public class GlobalRecordsEM {
 			finally{
 				SQLiteManager.getInstance().closeDB();
 			}
-			if(usesToCompare >= (avgUses+(avgUses/(100/15)))){
-				notificationAverageUsesDailyAlreadyShowedToday = true;
-			}
 		}
 
-		return notificationAverageUsesDailyAlreadyShowedToday;
+		boolean isRecord = false;
+		if(averageUsesDaily >= 0 && usesToCompare >= (averageUsesDaily+(averageUsesDaily/(100/15)))){
+			isRecord = true;
+			averageUsesDaily = -2;
+		}
+
+		return isRecord;
 	}
 
 	/**
@@ -120,12 +120,10 @@ public class GlobalRecordsEM {
 	 * @return
 	 */
 	public static boolean isAverageDailyTimeBeaten(long timeToCompare, int year, Context context){
-		long avgTime = 0;
-
-		if(!notificationAverageTimeDailyAlreadyShowedToday){
+		if(averageTimeDaily == -1){
 			try{
 				SQLiteManager.getInstance().openDB(false, context);
-				avgTime = PhoneUse.averageTimePerDay(year);
+				averageTimeDaily = PhoneUse.averageTimePerDay(year);
 			}
 			catch(Exception e){
 				e.printStackTrace();
@@ -133,12 +131,15 @@ public class GlobalRecordsEM {
 			finally{
 				SQLiteManager.getInstance().closeDB();
 			}
-			if(timeToCompare >= (avgTime+(avgTime/10)) && timeToCompare >= 600000){
-				notificationAverageTimeDailyAlreadyShowedToday = true;
-			}
 		}
 
-		return notificationAverageTimeDailyAlreadyShowedToday;
+		boolean isRecord = false;
+		if(averageTimeDaily >= 0 && timeToCompare >= (averageTimeDaily+(averageTimeDaily/10)) && timeToCompare >= 600000){
+			isRecord = true;
+			averageTimeDaily = -2;
+		}
+
+		return isRecord;
 	}
 
 	/**
@@ -147,9 +148,8 @@ public class GlobalRecordsEM {
 	public static void reset(){
 		mostUses = -1;
 		mostTime = -1;
-
-		notificationAverageUsesDailyAlreadyShowedToday = false;
-		notificationAverageTimeDailyAlreadyShowedToday = false;
+		averageUsesDaily = -1;
+		averageTimeDaily = -1;
 	}
 
 }
